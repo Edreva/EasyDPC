@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "EasyDPC"
+version = "1.0.0"
+description = "Processes multidimensional image stacks and recontructs quantitative phase data using differential phase contrast"
+readme = "README.md"
+license = "GPL-3.0"
+license-files = ["LICENCE.txt"]
+requires-python = ">=3.11"
+authors = [{name = "Ewan Drever-Smith", email = "Ewan.Drever-Smith@nottingham.ac.uk"}]
+keywords = ["microscopy", "DPC", "NDTiff", "qDPC"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "customtkinter >= 5.2",
+    "numpy >= 2.2",
+    "tifffile >= 2025.5",
+    "scipy >= 1.1",
+    "ndstorage >= 0.1.18",
+    
+]
+
+[project.optional-dependencies]
+gpu3d = ["arrayfire >= 3.8"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["EasyDPC*"]
+
+[project.scripts]
+easydpc-gui = "EasyDPC.gui:main"
+
+[project.urls]
+Repository = "https://github.com/edreva/cosmic/software/easydpc"
+Documentation = "https://github.com/edreva/cosmic/software/easydpc#readme"

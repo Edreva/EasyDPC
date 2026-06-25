@@ -1,0 +1,6 @@
+[submodule "EasyDPC/third_party/WallerLab/DPC_withAberrationCorrection"]
+	path = EasyDPC/third_party/WallerLab/DPC_withAberrationCorrection
+	url = https://github.com/Waller-Lab/DPC_withAberrationCorrection
+[submodule "EasyDPC/third_party/WallerLab/3DQuantitativeDPC"]
+	path = EasyDPC/third_party/WallerLab/3DQuantitativeDPC
+	url = https://github.com/Waller-Lab/3DQuantitativeDPC
