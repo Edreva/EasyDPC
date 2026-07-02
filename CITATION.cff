@@ -14,7 +14,7 @@ authors:
 repository-code: 'https://github.com/edreva/easydpc'
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.21133309
+    value: 10.5281/zenodo.21133462
 abstract: >-  
   EasyDPC. A Python GUI for processing quantitative 
   phase images from NDTiff datasets containing DPC images,
