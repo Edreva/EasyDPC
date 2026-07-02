@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+title: >-
+  EasyDPC
+message: >-
+  If you use this project, please cite it using the metadata
+  from this file.
+type: software
+authors:
+  - given-names: Ewan
+    family-names: Drever-Smith
+    email: ewan.drever-smith@nottingham.ac.uk
+    affiliation: University of Nottingham
+    orcid: 'https://orcid.org/0009-0002-0242-6737'
+repository-code: 'https://github.com/edreva/easydpc'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.21133309
+abstract: >-  
+  EasyDPC. A Python GUI for processing quantitative 
+  phase images from NDTiff datasets containing DPC images,
+keywords:
+  - microscopy
+  - quantitative-phase-imaging
+  - ndtiff
+  - differential-phase-contrast
+license: GPL-3.0
+commit: ed3d578d0dad3625be36e5959d9ea97873e274a5
+version: 0.1.0
+date-released: 2026-07-02

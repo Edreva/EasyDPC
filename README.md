@@ -1,4 +1,5 @@
 # EasyDPC
+[![DOI](https://zenodo.org/badge/1280564047.svg)](https://doi.org/10.5281/zenodo.21133308)
 
 ## What does EasyDPC do?
 EasyDPC is a GUI fronted python program that enables quick and easy processing of quantitative differential phase contrast (qDPC) images from bulk NDTiff datasets. 
