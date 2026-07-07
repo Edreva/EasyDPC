@@ -4,10 +4,29 @@
 ## What does EasyDPC do?
 EasyDPC is a GUI fronted python program that enables quick and easy processing of quantitative differential phase contrast (qDPC) images from bulk NDTiff datasets. 
 
+## Download
+
+### A: Using Git
+
+Clone this repository using the following git command
+
+```git clone https://github.com/edreva/easydpc --recursive```
+
+The ```--recursive``` argument ensures the submodule dependencies are also downloaded.
+
+### B: Manual Download
+
+Download [this repository](https://github.com/Edreva/EasyDPC/archive/refs/heads/main.zip) repository and unzip it.
+
+After unzipping the files, you will need to manually download the dependencies and unzip them into [EasyDPC/third_party/WallerLab/](./EasyDPC/third_party/WallerLab/):
+
+ - [3DQuantitativeDPC](https://github.com/Waller-Lab/3DQuantitativeDPC/archive/5a6c76abe485fa14095c438519c60e2f6346afde.zip)
+
+ - [DPC_withAberrationCorrection](https://github.com/Waller-Lab/DPC_withAberrationCorrection/archive/b9cbbdf24a50379749fdb2c7b6026024db674087.zip)
+
+
 ## Installation
 EasyDPC requires a minimum Python version of 3.11.
-
-Download or clone this repository and following the proceeding steps to install EasyDPC. When cloning the repository, pass the ```--recursive``` argument to ensure the submodules are also initialised.
 
 All specified commands should be run in a console window from the root of this repository (folder containing pyproject.toml).
 
@@ -48,7 +67,7 @@ This will open the initial screen of the GUI:
 From here, the directory containing the NDTiff dataset to be processed can be selected. 
 
 ## Input format
-In order to process qDPC images, EasyDPC expects that the input NDTiff dataset will contain a channels axis containing at least two DPC input images, which are those obtained by illuminating with an asymmetric illumination pattern (see [[1]](https://opg.optica.org/abstract.cfm?URI=oe-23-9-11394)). For automatic detection of the relevant channels, the channel names should be of the form: "DPC_#" where # denotes the rotation of the illumination pattern in degrees. In Micro-manager channel names are specified by the Config groups selected as channels during a multi-dimensional acquisition. Failing this, manual selection of the channels and their rotations is also supported within the GUI. 
+In order to process qDPC images, EasyDPC expects that the input NDTiff dataset will contain a channels axis containing at least two DPC input images, which are those obtained by illuminating with an asymmetric illumination pattern (see [[1]](https://opg.optica.org/abstract.cfm?URI=oe-23-9-11394)). For automatic detection of the relevant channels, the channel names should be of the form: "DPC_#" where # denotes the rotation of the illumination pattern in degrees. In Micro-manager channel names are specified by the Config groups selected as channels during a multi-dimensional acquisition. Failing this, manual selection of the channels and their rotations is also supported within the EasyDPC GUI. 
 
 ### What is an NDTiff dataset?
 
@@ -64,8 +83,8 @@ More information can be found at the following links:
 
 ## qDPC Algorithms
 For processing the data, three algorithms from the [Waller Lab](https://github.com/Waller-Lab/) are utilised:
- - [DPC](https://github.com/Waller-Lab/DPC_withAberrationCorrection) - Reconstructs phase using Tikhonov Regularised deconvolution) [[1]](#references)
- - [Aberration-corrected DPC](https://github.com/Waller-Lab/DPC_withAberrationCorrection) - Jointly solves for complex-field and pupil aberration) [[2]](#references)
+ - [DPC](https://github.com/Waller-Lab/DPC_withAberrationCorrection) - Reconstructs phase using Tikhonov Regularised deconvolution [[1]](#references)
+ - [Aberration-corrected DPC](https://github.com/Waller-Lab/DPC_withAberrationCorrection) - Jointly solves for complex-field and pupil aberration [[2]](#references)
  - [3D DPC](https://github.com/Waller-Lab/3DQuantitativeDPC/) - Reconstructs 3D refractive index from through focus data  [[3]](#references)
 
  The DPC solver algorithm used in EasyDPC is dependent on the selection made in the _Deconvolution Params_ section of the GUI ([full GUI layout](#gui-layout)):
@@ -79,6 +98,7 @@ If the 2D solver is selected, the algorithm used is either:
 Else, if the 3D solver is selected, the 3D DPC algorithm(s) [[3]](#references) are used.
 
 ## GUI Layout
+A panel containing explanations for each entry in the GUI can be opened by clicking on the 'Docs' button in the top right corner of the window.
 
 <img src="Images/EasyDPC_Screenshot_full.png" width="600" />
 
@@ -96,7 +116,10 @@ A sample dataset is included in [Sample Data](./Sample%20Data/easydpc_sample_dat
 
 ## Troubleshooting
 
-If when running the app you are presented the following error ```ModuleNotFoundError: No module named 'EasyDPC.third_party'```, this is likely caused by missing dependencies in the EasyDPC/third_party/WallerLab directory. Run ```git submodule update --init --recursive``` to initialise the submodules or manually download the code from the linked repositories.
+If when running the app you are presented the following error ```ModuleNotFoundError: No module named 'EasyDPC.third_party'```, this is likely caused by missing dependencies in the EasyDPC/third_party/WallerLab directory. Run ```git submodule update --init --recursive``` to initialise the submodules or manually download the code from the linked repositories. After these have been downloaded you will need to rerun ```pip install .```.
+
+## Acknowledgements
+The design and layout of this GUI was inspired by Nathan O'Connor's [bead-analyser](https://github.com/natearnas/bead-analyzer) tool. 
 
 # References
 [1] [L. Tian and L. Waller, ‘Quantitative differential phase contrast imaging in an LED array microscope’, Opt. Express, vol. 23, no. 9, p. 11394, May 2015, doi: 10.1364/OE.23.011394.](https://doi.org/10.1364/OE.23.011394)
