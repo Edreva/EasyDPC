@@ -58,6 +58,16 @@ class QDPCProcessingParameters:
     # Slice selection for subsetting the data before processing.
     image_axes_slices: list | None = None
 
+    # Input format and axis roles. For NDTiff these are derived from the
+    # metadata; for OME-TIFF they are set (or confirmed) by the user.
+    input_format: str = "NDTiff"           # "NDTiff" or "OME-TIFF"
+    channel_axis: int | None = None        # Index into image_axis_order holding the DPC images.
+    z_axis: int | None = None              # Index into image_axis_order of the z axis (3D only).
+    # OME-TIFF only: user override of the non-YX stack shape (for flattened stacks),
+    # and the per-axis codes reported by the file, used to check batch compatibility.
+    stack_shape: list[int] | None = None
+    source_axes: list[str] | None = None
+
     def to_dict(self) -> dict:
         return asdict(self)
 

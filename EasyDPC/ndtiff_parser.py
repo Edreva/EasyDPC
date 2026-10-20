@@ -32,6 +32,8 @@ class NDTiffParser:
         existing_params: QDPCProcessingParameters | None = None,
     ) -> None:
         self.ndtiff_path = Path(ndtiff_path)
+        self.notes: list[str] = []
+        self.source_files = {self.ndtiff_path.resolve()}
         self.dataset = nd.Dataset(str(self.ndtiff_path))
         self._parse_metadata(existing_params)
 
@@ -47,6 +49,8 @@ class NDTiffParser:
 
         camera_pixel_size = self._get_camera_pixel_size()
         z_step = self._parse_z_step()
+        channel_axis = axis_order.index("channel") if "channel" in axis_order else None
+        z_axis = axis_order.index("z") if "z" in axis_order else None
 
         if existing_params is not None:
             # Update only the file-specific fields. Preserve user-set values.
@@ -58,7 +62,10 @@ class NDTiffParser:
             existing_params.camera_name = self.camera_name
             existing_params.dpc_rotations = existing_params.dpc_rotations if dpc_rotations is None else dpc_rotations
             existing_params.camera_pixel_size = camera_pixel_size if camera_pixel_size is not None else existing_params.camera_pixel_size
-            existing_params.z_step = z_step
+            existing_params.z_step = z_step if z_step is not None else existing_params.z_step
+            existing_params.input_format = "NDTiff"
+            existing_params.channel_axis = channel_axis
+            existing_params.z_axis = z_axis
             self.dpc_parameters = existing_params
         else:
             self.dpc_parameters = QDPCProcessingParameters(
@@ -70,7 +77,10 @@ class NDTiffParser:
                 dpc_channel_idxs=dpc_channel_idxs,
                 dpc_rotations=new_dpc_rotations,
                 camera_pixel_size=camera_pixel_size,
-                z_step=z_step,
+                z_step=z_step if z_step is not None else 0.0,
+                input_format="NDTiff",
+                channel_axis=channel_axis,
+                z_axis=z_axis,
             )
 
     def _parse_z_step(self) -> float | None:

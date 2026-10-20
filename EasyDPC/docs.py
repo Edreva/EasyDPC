@@ -14,18 +14,29 @@ Documentation strings for the GUI widgets.
 
 
 DOCS: dict[str, str] = {
+    "input_format": (
+        "NDTiff: a Micro-Manager NDTiff dataset directory. Axes, channels and"
+        " z-step are read from its metadata."
+        "\n\nOME-TIFF: a single .ome.tif file (any multi-page .tif also works)."
+        " Its metadata is used for suggestions only; confirm the axes under"
+        " Axis Assignment before processing."
+    ),
     "open_dir": (
-        "Select the NDTiff dataset directory to process. The directory should contain"
+        "NDTiff: select the dataset directory to process. The directory should contain"
         " TIFF files following the same name stem as the parent directory, e.g."
         "\n\nroot_dir/"
         "\n├── root_dir_NDTiffStack.tiff"
         "\n├── root_dir_NDTiffStack_1.tiff"
         "\n│   ..."
         "\n└── root_dir_NDTiffStack_N.tiff"
+        "\n\nOME-TIFF: select the .ome.tif file. For a multi-file OME-TIFF"
+        " dataset any one of its files can be selected."
+        "\n\nA path can also be typed or pasted, then press Enter."
     ),
     "save_dir": (
         "Select the directory in which to save the processed output."
-        " If left blank, output will be placed in subdirectories of the NDTiff directory(ies)."
+        " If left blank, output will be placed in subdirectories of the NDTiff directory(ies),"
+        " or in a qDPC folder beside the OME-TIFF file(s)."
         " Note that if multiple datasets are being processed, all outputs will be placed in the specified directory."
     ),
     "process_all": (
@@ -39,6 +50,9 @@ DOCS: dict[str, str] = {
         "\n│   ..."
         "\n└── other_dir_N/"
         "\n      └── other_dir_N_NDTiffStack.tiff"
+        "\n\nOME-TIFF: all other OME-TIFF files in the same directory are processed"
+        " with the same axis assignment (or all .tif files, if the selected file is"
+        " not named .ome.tif). Files with a different axis layout are skipped."
         "\n\nThe selected dataset is always processed first and is not repeated."
     ),
     "metadata": (
@@ -49,6 +63,40 @@ DOCS: dict[str, str] = {
         "\nChannel names: the names of each channel as parsed from the metadata."
         "\nZ-step: the axial step size in micrometres (um) parsed from the metadata, if available."
         "\nCamera: The name of the camera, if found. Used to look up the pixel size from the camera info manager."
+        "\n\nOME-TIFF also shows the file format, the axes as labelled in the file"
+        " (T time, C channel, Z depth, S RGB sample, Q/I unlabelled), the sample-plane"
+        " pixel size and objective, where present, and notes on anything not found."
+    ),
+    "axis_roles": (
+        "OME-TIFF only. Tell EasyDPC how the file's axes map onto DPC data, since"
+        " OME-TIFF files often lack (or mislabel) axis and channel information."
+        " Y and X are always taken from the TIFF pages themselves."
+    ),
+    "stack_shape": (
+        "The shape of the stack of image planes (all axes except Y and X, and"
+        " except the image series axis for multi-image files)."
+        " If the file stores everything as one long sequence, enter the real shape"
+        " in order of slowest to fastest changing, then Apply."
+        " E.g. 60 planes acquired as 15 z-planes x 4 DPC patterns (patterns"
+        " cycling fastest) -> '15, 4'. Applying resets the axis assignment."
+    ),
+    "channel_axis": (
+        "The axis along which the DPC illumination patterns change."
+        " Suggested from the metadata ('C') when available, otherwise it must be selected."
+        " Any axis other than Y and X may be used, including the RGB sample axis"
+        " for colour-multiplexed DPC."
+    ),
+    "dpc_indices": (
+        "Which positions along the channel axis are DPC images, in the same order as"
+        " the Source Rotations. Comma-separated indices and/or slices,"
+        " e.g. '0, 1, 2, 3', '0:4' or '1:5' (skipping a brightfield channel at 0)."
+        " Indices need not be contiguous or ascending, e.g. '2, 0, 3, 1'."
+        " The rotations are reset to evenly spaced angles if their count no longer matches."
+    ),
+    "z_axis": (
+        "The axis holding the z-planes, required for the 3D solver."
+        " For the 2D solver it can be left as None: every plane is then"
+        " reconstructed independently, like any other axis."
     ),
     "slices": (
         "Python slice syntax to select a subset of frames along each axis before"
@@ -81,13 +129,14 @@ DOCS: dict[str, str] = {
         " illumination patterns, one per DPC channel."
         " if channel names contain 'DPC_ANGLE' (e.g. 'DPC_0', 'DPC_90', etc.) "
         " then rotations are parsed automatically from the metadata. "
-        " Otherwise, the user must specify the rotations here in the same order as the DPC channels."
+        " Otherwise, the user must specify the rotations here in the same order as the DPC channels"
+        " (for OME-TIFF, the order of the DPC indices)."
         " E.g. '0, 90, 180, 270' for ◓ ◑ ◒ ◐."
     ),
     "z_step": (
         "Axial step size between z-planes in micrometres (um)."
         " Required for 3D reconstruction only. Parsed automatically from the"
-        " NDTiff metadata when available."
+        " NDTiff metadata, or the OME-TIFF PhysicalSizeZ, when available."
     ),
     "ri_medium": (
         "Refractive index of the sample medium."
