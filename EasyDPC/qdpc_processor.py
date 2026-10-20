@@ -10,6 +10,7 @@ Wrapper for the 2D and 3D DPC algorithms made available by WallerLab
 """
 
 
+import re
 from pathlib import Path
 
 import numpy as np
@@ -156,18 +157,24 @@ class QDPCProcessor:
         """
 
         input_path = Path(self.params.input_file_path)
-        if not output_path:
-            output_path = input_path / "qDPC" / input_path.name
+        if input_path.is_file():
+            # Single file input (OME-TIFF): default output sits beside the file,
+            # and the name drops the .ome.tif / .tif suffixes.
+            default_dir = input_path.parent / "qDPC"
+            stem = re.sub(r"(\.ome)?\.tiff?$", "", input_path.name, flags=re.IGNORECASE)
         else:
-            output_path = Path(Path(output_path) / input_path.name)
+            # NDTiff dataset directory.
+            default_dir = input_path / "qDPC"
+            stem = input_path.stem
+        output_dir = Path(output_path) if output_path else default_dir
 
         if self.params.solver_type == "2D":
             if update_progress is not None:
                 update_progress(label="Running 2D qDPC solver...")
             result = self._solve_2d(update_progress=update_progress)
-            self._save_results(result, output_path.with_name(str(input_path.stem) + "_2DqDPC.tif"))
+            self._save_results(result, output_dir / f"{stem}_2DqDPC.tif")
         elif self.params.solver_type == "3D":
             if update_progress is not None:
                 update_progress(label="Running 3D qDPC solver...")
             result = self._solve_3d(update_progress=update_progress)
-            self._save_results(result, output_path.with_name(str(input_path.stem) + "_3DqDPC.tif"))
+            self._save_results(result, output_dir / f"{stem}_3DqDPC.tif")
